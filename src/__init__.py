@@ -1,0 +1,2 @@
+# MTG Pricer TUI Application
+
