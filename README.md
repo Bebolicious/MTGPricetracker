@@ -2,6 +2,8 @@
 
 A Terminal User Interface (TUI) application for tracking Magic: The Gathering card prices using the Scryfall API.
 
+[![Build Release](https://github.com/Bebolicious/MTGPricetracker/actions/workflows/release.yml/badge.svg)](https://github.com/Bebolicious/MTGPricetracker/actions/workflows/release.yml)
+
 ## Features
 
 - 🔍 **Card Search**: Search for MTG cards by name with fuzzy matching
