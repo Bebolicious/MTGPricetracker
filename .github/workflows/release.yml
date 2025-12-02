@@ -1,0 +1,85 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            artifact_name: mtg_price_tracker-linux
+            asset_name: mtg_price_tracker-linux
+          - os: windows-latest
+            artifact_name: mtg_price_tracker-windows.exe
+            asset_name: mtg_price_tracker-windows.exe
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build with PyInstaller
+      run: |
+        pyinstaller mtg_price_tracker.spec
+
+    - name: Rename artifact (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        mv dist/mtg_price_tracker dist/${{ matrix.artifact_name }}
+
+    - name: Rename artifact (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        move dist\mtg_price_tracker.exe dist\${{ matrix.artifact_name }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: dist/${{ matrix.artifact_name }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+    - name: Download Linux artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: mtg_price_tracker-linux
+
+    - name: Download Windows artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: mtg_price_tracker-windows.exe
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          mtg_price_tracker-linux
+          mtg_price_tracker-windows.exe
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
