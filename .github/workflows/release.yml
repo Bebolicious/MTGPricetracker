@@ -23,10 +23,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
@@ -51,7 +51,7 @@ jobs:
         move dist\mtg_price_tracker.exe dist\${{ matrix.artifact_name }}
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.artifact_name }}
         path: dist/${{ matrix.artifact_name }}
@@ -63,12 +63,12 @@ jobs:
 
     steps:
     - name: Download Linux artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: mtg_price_tracker-linux
 
     - name: Download Windows artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: mtg_price_tracker-windows.exe
 
