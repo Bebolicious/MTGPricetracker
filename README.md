@@ -18,6 +18,16 @@ A Terminal User Interface (TUI) application for tracking Magic: The Gathering ca
 
 ## Installation
 
+### Option 1: Download Pre-built Executable (Easiest)
+
+Download the latest release for your platform from the [Releases page](../../releases):
+- **Linux**: Download `mtgpricer-linux`, make it executable, and run
+- **Windows**: Download `mtgpricer-windows.exe` and run
+
+No Python installation required!
+
+### Option 2: Run from Source
+
 1. Make sure you have Python 3.8+ installed
 2. Install dependencies:
 
